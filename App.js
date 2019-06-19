@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
-import HomeSreen from "./scr/HomeSreen";
-
+import Icon from "react-native-vector-icons/Ionicons";
 import {
   createStackNavigator,
   createAppContainer,
-  createDrawerNavigator
+  createDrawerNavigator,
+  createBottomTabNavigator
 } from "react-navigation";
-import SettingsScreen from "./scr/SettingsScreen";
+import ViewFile from "./scr/SubSreens/View";
+import UploadFile from "./scr/SubSreens/Upload";
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -15,26 +16,54 @@ export default class App extends Component<Props> {
     return <AppContainer />;
   }
 }
-/*
-const AppStackNavigator = createStackNavigator(
+
+const HomeSreenTabNavigator = createBottomTabNavigator(
   {
-    Home: HomeSreen
+    "View Files": ViewFile,
+    "Upload Files": UploadFile
   },
   {
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: "#455a64"
-      }
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state.routes[navigation.state.index];
+      return {
+        headerTitle: routeName
+      };
+    },
+    tabBarOptions: {
+      labelStyle: {
+        fontSize: 18
+      },
+      activeBackgroundColor: "#00695c"
     }
   }
-);*/
-const AppStackNavigator = createDrawerNavigator(
+);
+
+const HomeStackNavigator = createStackNavigator(
   {
-    Setting: SettingsScreen,
-    Home: HomeSreen
+    HomeSreenTabNavigator: HomeSreenTabNavigator
   },
   {
-    unmountInactiveRoutes:true
+    defaultNavigationOptions: ({ navigation }) => {
+      return {
+        headerLeft: (
+          <Icon
+            name="md-menu"
+            style={{ paddingLeft: 10 }}
+            size={30}
+            onPress={() => navigation.openDrawer()}
+          />
+        )
+      };
+    }
+  }
+);
+
+const AppStackNavigator = createDrawerNavigator(
+  {
+    Home: HomeStackNavigator
+  },
+  {
+    unmountInactiveRoutes: true,
     defaultNavigationOptions: {
       headerStyle: {
         backgroundColor: "#455a64"

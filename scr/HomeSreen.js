@@ -1,14 +1,25 @@
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
+import ViewFile from "./SubSreens/View";
+import UploadFile from "./SubSreens/Upload";
+
+import {
+  createStackNavigator,
+  createAppContainer,
+  createDrawerNavigator,
+  createBottomTabNavigator
+} from "react-navigation";
+
 export default class HomeSreen extends Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>HAi</Text>
-      </View>
-    );
+    return <DashboardTabNavigator />;
   }
 }
+
+const DashboardTabNavigator = createBottomTabNavigator({
+  ViewFile: ViewFile,
+  UploadFile: UploadFile
+});
 const styles = StyleSheet.create({
   container: {
     flex: 1,
